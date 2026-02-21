@@ -235,7 +235,7 @@ def get_bus_stops(request):
     code = request.GET.get("code").strip("/")
     url = "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival"
     headers = {
-        "AccountKey": "DYcp2xF6QNKde4zceePCkw==",
+        "AccountKey": "",
         "accept": "application/json"
     }
 
