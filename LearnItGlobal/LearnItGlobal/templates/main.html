@@ -1,0 +1,1705 @@
+{% extends "base.html" %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'subway_map/index-Dn3qDZfo.css' %}">
+{% block title %}Home | BusMapSG {% endblock %}
+
+{% block content %}
+    {% if Action == 'explore' %}
+    <!-- This code executed if the user is on the explore menu-->
+
+    <div id="main">
+        <div id="map"></div>
+
+        <div id="bottom" style="margin-left: 2vw;">
+            <div id="popup_bar_train" style="display:none; margin-left: 2vw;">
+                <h1 id="title_train" style="margin-bottom: 10px;"></h1>
+                <div id="crowding_level">
+
+                </div>
+
+                <div id="container" style="display:flex; justify-content: space-between; margin: 0;">
+
+                    <div id="left" style="margin-bottom: 0;">
+                        <div class="images_train" style="display: flex; justify-content: space-between;">
+                            <div class="block" style="display: flex; justify-content: flex-start;">
+                                <img alt="hi" id="NEL" style="display:none; width: 0px;" src="{% static 'images/MRTLogos/NEL.png' %}">
+                                <img alt="hi" id="NS" style="display:none; width: 0px;" src="{% static 'images/MRTLogos/NSL.png' %}">
+                                <img alt="hi" id="EW" style="display:none; width: 0px;" src="{% static 'images/MRTLogos/EWL.png' %}">
+                                <img alt="hi" id="CCL" style="display:none; width: 0px;" src="{% static 'images/MRTLogos/CCL.png' %}">
+                            </div>
+                            <!--
+                            <img id="TEL" style="display:none;" src="{% static 'images/MRTLogos/TEL.png' %}">
+                            <img id="BPLRT" style="display:none;" src="{% static 'images/MRTLogos/BPLRT.png' %}">
+                            <img id="DT" style="display:none;" src="{% static 'images/MRTLogos/DT.png' %}">
+                            <img id="SKLRT" style="display:none;" src="{% static 'images/MRTLogos/SKLRT.png' %}">
+                            <img id="PGLRT" style="display:none;" src="{% static 'images/MRTLogos/PGLRT.png' %}">
+                            -->
+                        </div>
+
+                        <p id="lines_train">
+
+                        </p>
+
+                        <p id="description_train"></p>
+                        <p id="trains_train"></p>
+
+                    </div>
+                    <div id="right">
+                        <div id="first_last_train" style="margin-top: 2vh; margin-right: 3vw; margin-bottom: 5vh;"></div>
+
+                    </div>
+
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <div>
+                        <div id="amenities_train" style="margin: 0;">
+                            <h3 id="header_amenities_train" style="display:none;">Available at this station</h3>
+
+                            <div class="amenities_images">
+                                <div>
+                                    <img id="DisabledPNG_train" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Disabled.png' %}">
+                                </div>
+                                <div>
+                                    <img id="ATMPNG_train" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/ATM.png' %}">
+                                </div>
+                                <div>
+                                    <img  id="ConveniencesPNG_train" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Conveniences.png' %}">
+                                </div>
+                                <div>
+                                    <img id="ToiletPNG_train" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Toilet.png' %}">
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div id="exits_nearby">
+                            <h3 id="header_exits">Exits</h3>
+                            <div id="exit_details">
+
+                            </div>
+                            <!-- prints each exit + description of where it leads to -->
+                        </div>
+
+                        <div id="alerts_section">
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <div id="subway-map-container" style="width: 400px; height: auto; margin:0; overflow: hidden; border-radius: 10px;"></div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+                <div id="popup_bar_bus" >
+                    <div class="title">
+                        <h1 id="title_bus" style="margin-bottom: 10px;"></h1>
+                    </div>
+                    <div style="display: flex; justify-content: space-between;">
+
+                        <div>
+                            <div id="stop_info">
+
+                                <div id="amenities_bus" style="margin: 0;">
+                                    <h3 id="header_amenities_bus" style="display:none;">Available at this station</h3>
+                                    <div class="amenities_images" id="amenities_images_bus">
+                                        <div>
+                                            <img  id="DisabledPNG_bus" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Disabled.png' %}">
+                                        </div>
+                                        <div>
+                                            <img id="ATMPNG_bus" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/ATM.png' %}">
+                                        </div>
+                                        <div>
+                                            <img id="ConveniencesPNG_bus" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Conveniences.png' %}">
+                                        </div>
+                                        <div>
+                                            <img id="ToiletPNG_bus" style="width: 0; height: 0; display: none;" src="{% static 'images/Amenities/Toilet.png' %}">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div id="amenity_expanded" style="width: 20%">
+
+                                </div>
+
+                                <div class="bus_amenities_description">
+
+                                </div>
+
+                                <div id="bus_timetable">
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <div>
+                            <div id="bus-map-container" style="width: 400px; height: 1000px; display:none; margin:0; margin-top:10vh; border-radius: 10px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+
+        <script>
+            let map;
+            let count = 0;
+            function success(coords) {
+                return coords;
+            }
+
+            function get_location() {
+                let latitude = 1.3521;
+                let longitude = 103.8198;
+
+                if (navigator.geolocation) {
+                    current_location = navigator.geolocation.getCurrentPosition((pos) => {
+                        latitude = pos.coords.latitude;
+                        longitude = pos.coords.longitude;
+                        initMap(latitude, longitude);
+                    });
+                }
+
+                initMap(latitude, longitude);
+            }
+
+            async function moveAlong(marker, startLat, startLng, endLat, endLng, time) {
+                startLat = Number(startLat)
+                startLng = Number(startLng)
+                endLat = Number(endLat)
+                endLng = Number(endLng)
+                time = Number(time)
+                if(!isNaN(startLat) && !isNaN(startLng)) {
+                    for(let i = 0; i< time; i++) {
+                        currLat = startLat + ((i/time)*(endLat-startLat));
+                        currLng = startLng + ((i/time)*(endLng-startLng));
+                        console.log(startLat, endLat);
+                        console.log(startLng, endLng);
+
+                        marker.position = new google.maps.LatLng(currLat, currLng);
+                        await new Promise(r => setTimeout(r, 20));
+                    }
+                }
+                else {
+                    marker.position = new google.maps.LatLng(endLat, endLng);
+
+                }
+            }
+
+            async function initMap(latitude, longitude) {
+              window.display_data_train = display_data_train;
+
+              map = new google.maps.Map(document.getElementById("map"), {
+                zoom: 13,
+                center: {lat: Number(latitude), lng: Number(longitude)},
+                mapId: "966803484a94c3d047ccf90b",
+              });
+
+              const {AdvancedMarkerElement} = await google.maps.importLibrary("marker");
+
+              ///Users/msajjad/PycharmProjects/LearnItGlobal/LearnItGlobal/static/images/MRTExits
+              const transitLayer = new google.maps.TransitLayer();
+              transitLayer.setMap(map);
+
+              const atms = JSON.parse(document.getElementById("atms-data").textContent);
+              const conveniences = JSON.parse(document.getElementById("conveniences-data").textContent);
+              const toilets = JSON.parse(document.getElementById("toilets-data").textContent);
+              const trainstations = JSON.parse(document.getElementById("trainstation").textContent);
+              const trainstationexits = JSON.parse(document.getElementById("trainstationexits").textContent);
+              const wheelchairs = JSON.parse(document.getElementById("wheelchairs").textContent);
+              const busstops = JSON.parse(document.getElementById("busstops").textContent);
+              const alerts = JSON.parse(document.getElementById("alerts").textContent);
+              const firsttrain = JSON.parse(document.getElementById("firsttrain").textContent);
+              const lasttrain = JSON.parse(document.getElementById("lasttrain").textContent);
+              const body = document.body;
+              const bus_map_container = document.getElementById("bus-map-container");
+              bus_map_container.style.display = 'none';
+
+              //light
+              const popup_box = document.getElementById("popup")
+              //dark
+              const background = document.getElementById("background");
+
+              const amenity_descriptions = document.getElementsByClassName("amenity_description");
+              for(const desc of amenity_descriptions) {
+                  desc.style.display = "none";
+              }
+
+
+              body.style.overflow = 'hidden';
+
+              let currentExecution = 0;
+              let r = null;
+              let c = null;
+
+              window.trigger_click = trigger_click;
+              function trigger_click(latitude, longitude) {
+                  for(marker of markers) {
+                    if(Number(marker.position.lat) == Number(latitude) && Number(marker.position.lng) == Number(longitude)) {
+                        marker.content.dispatchEvent(new Event("click", { bubbles: true }));
+                        const new_position = {lat: Number(latitude), lng: Number(longitude)}
+
+                        map.setCenter(new_position)
+                        map.setZoom(17);
+                    }
+                  }
+              }
+
+              async function getBusData(StopCode, serviceNo, bus_sequence_number, clicked=false) {
+                showMap("bus", serviceNo);
+                bus_map_container.style.display = 'block';
+
+                const executionId = ++currentExecution;
+                let executed = false;
+
+
+                while (executionId === currentExecution) {
+                    if(r != null) {r.map = null; r = null}
+                    if(c != null) {c.setMap(null); c = null}
+
+                    if(clicked == true) {
+                        r  = new google.maps.marker.AdvancedMarkerElement({
+                              map: map,
+                              zIndex: 100,
+                        });
+                        c = new google.maps.Circle({
+                            strokeColor: "#FF0000",     // border color
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                            fillColor: "#FF0000",       // fill color
+                            fillOpacity: 0.35,
+                            map: map,
+                            zIndex: 100,
+
+                        });
+
+
+                        let busLongitude;
+                        let busLatitude;
+                        let previousLatitude;
+                        let previousLongitude;
+
+                        fetch(`/api/busstops/?code=${StopCode}/`)
+                            .then(res => res.json())
+                            .then(data => {
+                                for(service_data of data["Services"]) {
+                                    if(Number(service_data["ServiceNo"]) == Number(serviceNo)) {
+                                        bus = service_data[`NextBus${bus_sequence_number > 1 ? bus_sequence_number : ''}`];
+                                        //1.422954,
+                                        busLongitude = Number(bus["Longitude"]);
+                                        busLatitude = Number(bus["Latitude"]);
+
+
+                                        time = new Date(bus["EstimatedArrival"]);
+
+                                        const now = new Date();
+                                        ETA = Math.round((time - now) / (1000 * 60));
+                                        Seating = bus["Load"]
+
+                                        Feature = bus["Feature"]
+                                        Type = bus["Type"]
+                                        Operator = service_data["Operator"];
+
+
+                                        let img_url;
+                                        switch(Operator) {
+                                            case 'SBST':
+                                                img_url = 'SBS';
+                                                break;
+
+                                            case 'TTS':
+                                                img_url = 'SG';
+                                                break;
+
+                                            case 'SMRT':
+                                                img_url = 'SMRT';
+                                                break;
+
+                                            default:
+                                                console.log(img_url);
+                                                break;
+
+                                        }
+                                        img_url += `_${Type}.png`;
+                                        img_url = "{% static 'images/Buses/' %}" + img_url;
+
+
+                                        let el = document.createElement("img");
+                                        el.style.width = "50px";
+                                        el.src = img_url;
+
+
+
+
+                                        let infoWindow
+                                        let content_out = "";
+                                        if(bus["Longitude"] == "0.0") {
+                                            content_out = `<p style="color:red">Location Unavailable</p>`;
+                                        }
+
+                                        if(Seating == "SEA") {
+                                            content_out += `<img src="${img_url}" style="height: 30px" alt="sbs"/><h3>${Feature == "WAB" ? "♿️" : "" } Bus ${serviceNo}</h3>`;
+
+                                            if(ETA > 60) {content_out += `<p><strong>ETA: </strong> ${ETA / 60} hr</p>`}
+                                            else if(ETA < 60 && ETA > 0) {content_out += `<p><strong>ETA: </strong> ` + `${ETA}` + ` min</p>`}
+                                            else {content_out += `<p><strong>ETA: </strong> Arrived</p>`}
+
+                                            content_out += `<p style="font-size: 15px; color: green;">Seats Available</p>`;
+
+
+                                            infoWindow = new google.maps.InfoWindow({
+                                                content: content_out
+                                            });
+
+                                        }
+                                        else if(Seating == "SDA") {
+                                            content_out += `<img src="${img_url}" style="height: 30px" alt="sbs"/><h3>${Feature == "WAB" ? "♿️" : "" } Bus ${serviceNo}</h3>`;
+
+                                            if(ETA > 60) {content_out += `<p><strong>ETA: </strong> ${ETA / 60} hr</p>`}
+                                            else if(ETA < 60 && ETA > 0) {content_out += `<p><strong>ETA:</strong>> ` + `${ETA}` + ` min</p>`}
+                                            else {content_out += `<p><strong>ETA: </strong> Arrived</p>`}
+
+                                            content_out += `<p style="font-size: 12px; color: orange;">Standing-Only</p>`;
+
+
+                                            infoWindow = new google.maps.InfoWindow({
+                                                content: content_out
+                                            });
+                                        }
+                                        else if(Seating == "LSD") {
+                                            content_out += `<img src="${img_url}" style="height: 30px" alt="sbs"/><h3>${Feature == "WAB" ? "♿️" : "" } Bus ${serviceNo}</h3>`;
+
+                                            if(ETA > 60) {content_out += `<p><strong>ETA: </strong> ${ETA / 60} hr</p>`}
+                                            else if(ETA < 60 && ETA > 0) {content_out += `<p><strong>ETA: </strong> ` + `${ETA}` + ` min</p>`}
+                                            else {content_out += `<p><strong>ETA: </strong> Arrived</p>`}
+
+
+                                            content_out += `<p style="font-size: 12px; color: red;">Crowded</p>`;
+
+                                            infoWindow = new google.maps.InfoWindow({
+                                                content: content_out,
+                                            });
+                                        }
+
+                                        if(ETA <= 0) {
+                                            for(busstop1 of busstops) {
+                                                if(Number(busstop1[3]) == Number(StopCode)) {
+                                                    moveAlong(r, previousLatitude, previousLongitude, Number(busstop1[0]), Number(busstop1[1]), 20)
+                                                    r.content = el;
+                                                }
+                                            }
+                                        }
+                                        else if(Number(busLatitude) != 0 && Number(busLongitude) != 0) {
+                                            moveAlong(r, previousLatitude, previousLongitude, Number(busLatitude), Number(busLongitude), 20)
+                                            r.content = el;
+                                        }
+                                        else if(Number(busLatitude) != 0 && Number(busLongitude) != 0) {
+                                            moveAlong(r, previousLatitude, previousLongitude, Number(busstop1[0]), Number(busstop1[1]), 20)
+                                            r.content = el;
+                                        }
+                                        else {
+                                            for(busstop1 of busstops) {
+
+                                                if(Number(busstop1[3]) == Number(StopCode)) {
+                                                   moveAlong(r, previousLatitude, previousLongitude, Number(busstop1[0]), Number(busstop1[1]), 20)
+                                                   r.content = el;
+
+                                                   if(ETA > 0) {
+                                                       radius = (ETA / 60) * 15000
+                                                       c.setRadius(radius);
+                                                       c.setCenter({lat: Number(busstop1[0]), lng: Number(busstop1[1])});
+                                                   }
+
+                                                }
+                                            }
+
+                                        }
+                                        if(executed == false) {
+                                            if(current != null) {current.close();}
+                                            current = infoWindow;
+                                            infoWindow.open({
+                                                anchor: r,  // attach to marker
+                                                map: map,
+                                                shouldFocus: false
+                                            });
+                                            executed = true;
+
+                                            google.maps.event.addListener(infoWindow,'closeclick',function(){
+                                               r.map = null; //removes the marker
+                                               c.setMap(null);
+                                               r = null;
+                                               c = null;
+                                            });
+
+
+                                        }
+                                        else {
+                                            infoWindow.anchor = r;
+                                            c.setMap(null);
+
+                                            r.addEventListener("click", () =>
+                                                {
+                                                    c.setMap(map);
+                                                    infoWindow.open({
+                                                        anchor: r,  // attach to marker
+                                                        map: map,
+                                                        shouldFocus: false
+                                                    });
+                                                    google.maps.event.addListener(infoWindow,'closeclick',function(){
+                                                       r.map = null; //removes the marker
+                                                       c.setMap(null);
+                                                       r = null;
+                                                       c = null;
+                                                    });
+
+                                                    r.map = map;
+                                                }
+                                            );
+
+                                        }
+                                        previousLatitude = busLatitude;
+                                        previousLongitide = busLongitude
+
+                                    }
+                                }
+
+                            })
+                    }
+                    await new Promise(r => setTimeout(r, 20000));
+                }
+
+              }
+              function applyMarkerRotation(marker, headingDegNorthCW) {
+                  // SVG faces EAST at 0°, Maps heading is from NORTH.
+                  const rotation = normDeg(headingDegNorthCW - 90);
+                  marker.content.style.transform = `rotate(${rotation}deg)`;
+
+              }
+
+              async function display_data_bus(StopName, StopCode, Amenities, Position) {
+
+                body.style.overflow = 'auto';
+
+                const train_bar = document.getElementById("popup_bar_train");
+                train_bar.style.display = 'none';
+
+                const title_bus = document.getElementById("title_bus");
+                const bus_timetable = document.getElementById("bus_timetable");
+                prehtml = `
+                            <div style="display: flex; justify-content: flex-start">
+                                <div>
+                                    <svg  id="close_svg" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi d-block mx-auto" viewBox="0 0 16 16"
+                                    onclick="document.getElementById('popup').style.display='none';
+                                    document.getElementById('background').style.display='none'">
+                                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3>Location Details</h3>
+                                </div>
+                            </div>
+                `
+
+                    fetch(`/api/busstops/?code=${StopCode}/`)
+                    .then(res => res.json())
+                    .then(data => {
+                          const popup_bar_bus = document.getElementById("popup_bar_bus");
+                          popup_bar_bus.style.display = "none";
+
+                          images = popup_bar_bus.getElementsByTagName("img");
+                          for(const img of images) {
+                                img.style.display = "none";
+                                img.style.width = "0";
+                                img.style.marginRight = "0";
+                          }
+
+                          title_bus.innerHTML = "<i class=\"fa-solid fa-bus\"></i>  " + StopName;
+
+                          const ToiletPNG = document.getElementById("ToiletPNG_bus")
+                          const ATMPNG = document.getElementById("ATMPNG_bus")
+                          const ConveniencesPNG = document.getElementById("ConveniencesPNG_bus")
+                          const DisabledPNG = document.getElementById("DisabledPNG_bus")
+                          const header_amenities = document.getElementById("header_amenities_bus")
+                          const amenity_expanded = document.getElementById("amenity_expanded");
+
+                          amenity_expanded.innerHTML = "";
+                          amenities_names = []
+                          amenities_description = []
+                          for(Amenity of Amenities) {amenities_names.push(Amenity[0]); amenities_description.push(Amenity[1])}
+
+                          console.log(amenities_names)
+                          console.log(amenities_description)
+
+                          if(Amenities.length > 0) {header_amenities.style.display = 'block'; }
+                          if(amenities_names.includes("ATM")) {
+                              ATMPNG.style.display = "block";
+                              ATMPNG.style.width = "40px";
+                              ATMPNG.style.height = "40px";
+                              ATMPNG.addEventListener("click", function() {
+                                  outHTML = '';
+                                  popup_box.style.display='block';
+                                  background.style.display='block';
+                                  popup_box.innerHTML = prehtml;
+
+                                  for(let i=0; i<amenities_names.length; i++) {
+                                      if(amenities_names[i] == "ATM") {
+
+                                        outHTML += `
+                                        <div style="display: flex; justify-content: flex-start;">
+                                            <div>
+                                                <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/ATM.png' %}">
+                                            </div>
+                                            <div>
+                                                <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                            </div>
+                                        </div>`;
+                                      }
+                                  }
+                                  popup_box.innerHTML += outHTML;
+                              })
+
+                          }
+                          if(amenities_names.includes("Toilet")) {
+                              ToiletPNG.style.display = "block";
+                              ToiletPNG.style.height = "40px";
+                              ToiletPNG.addEventListener("click", function() {
+                                  outHTML = '';
+                                  popup_box.style.display='block';
+                                  background.style.display='block';
+                                  popup_box.innerHTML = prehtml
+
+                                  for(let i=0; i<amenities_names.length; i++) {
+                                      if(amenities_names[i] == "Toilet") {
+                                        outHTML += `
+                                        <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                            <div>
+                                                <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Toilet.png' %}">
+                                            </div>
+                                            <div>
+                                                <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                            </div>
+                                        </div>`;
+                                      }
+                                  }
+                                  popup_box.innerHTML += outHTML;
+                              })
+                          }
+                          if(amenities_names.includes("Wheelchair")) {
+                              DisabledPNG.style.display = "block";
+                              DisabledPNG.style.width = "40px";
+                              DisabledPNG.style.height = "40px";
+                              DisabledPNG.addEventListener("click", function() {
+                                  outHTML = '';
+                                  popup_box.style.display='block';
+                                  background.style.display='block';
+                                  popup_box.innerHTML = prehtml;
+
+
+                                  for(let i=0; i<amenities_names.length; i++) {
+                                      if(amenities_names[i] == "Wheelchair") {
+
+                                        outHTML += `
+                                        <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                            <div>
+                                                <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Disabled.png' %}">
+                                            </div>
+                                            <div>
+                                                <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                            </div>
+                                        </div>`;
+                                      }
+                                  }
+                                  popup_box.innerHTML += outHTML;
+                              })
+                          }
+                          if(amenities_names.includes("Convenience Store")) {
+                              ConveniencesPNG.style.display = "block";
+                              ConveniencesPNG.style.width = "40px";
+                              ConveniencesPNG.style.height = "40px";
+                              ConveniencesPNG.addEventListener("click", function() {
+                                  popup_box.style.display='block';
+                                  background.style.display='block';
+                                  popup_box.innerHTML = prehtml;
+
+
+                                  outHTML = '';
+                                  for(let i=0; i<amenities_names.length; i++) {
+                                      if(amenities_names[i] == "Convenience Store") {
+                                        outHTML += `
+                                        <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                            <div>
+                                                <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Conveniences.png' %}">
+                                            </div>
+                                            <div>
+                                                <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                            </div>
+                                        </div>`;
+                                      }
+                                  }
+                                  popup_box.innerHTML += outHTML;
+                              })
+
+                          }
+
+
+                          if(data != null) {
+                            code = data['BusStopCode'];
+                            services = data['Services'];
+
+                            //.slice(start, end)
+                            // creates html elements/ fills existing elemtns for each
+                            // service
+                            // then if you click one, add an onclick event -> add a marker to the app
+                            // then it will query the API
+                            outHTML = "<h2>Bus Timetable</h2>";
+                            if(services.length == 0) {outHTML += "<p>No Buses At the Moment</p>";}
+                            else{outHTML += "<p>Click Bus Timing For Live Updates</p>";}
+
+                            for (const service of services) {
+                                serviceNo = service["ServiceNo"];
+                                operator = service["Operator"];
+                                type = service["Type"];
+
+                                time1 = service["NextBus"]["EstimatedArrival"].slice(11, 16);
+                                time2 = service["NextBus2"]["EstimatedArrival"].slice(11, 16);
+                                time3 = service["NextBus3"]["EstimatedArrival"].slice(11, 16);
+
+
+                                outHTML += `<p id="${serviceNo}"> ${serviceNo} `
+
+
+                                if(time1 != '') {outHTML += `<button id="${serviceNo}_1"  style="margin-left: 10px;">${time1}</button>`}
+                                if(time2 != '') {outHTML += `<button id="${serviceNo}_2" style="margin-left: 10px">${time2} </button>`}
+                                if(time3 != '') {outHTML += `<button id="${serviceNo}_3" style="margin-left: 10px">${time3}</button>`}
+
+                                outHTML += `</p>`
+                            }
+
+                            bus_timetable.innerHTML = outHTML;
+
+                            for(const service of services) {
+                                const serviceNo = service["ServiceNo"];
+
+                                const bus1 = document.getElementById(`${serviceNo}_1`);
+                                if(bus1 != null) {
+                                    bus1.addEventListener("click", () => {
+                                        map.position = {lat: Position.lat, lng: Position.lng}
+                                        map.zoom = 15;
+                                        getBusData(code, serviceNo, 1, true);
+
+                                    });
+                                }
+
+                                const bus2 = document.getElementById(`${serviceNo}_2`);
+                                if(bus2 != null) {
+                                    bus2.addEventListener("click", () => {
+                                        map.position = {lat: Position.lat, lng: Position.lng}
+                                        map.zoom = 15;
+                                        getBusData(code, serviceNo, 2, true);
+
+                                    });
+                                }
+
+                                const bus3 = document.getElementById(`${serviceNo}_3`);
+                                if(bus3 != null) {
+                                    bus3.addEventListener("click", () => {
+                                        map.position = {lat: Position.lat, lng: Position.lng}
+                                        map.zoom = 15;
+                                        getBusData(code, serviceNo, 3, true);
+                                    });
+                                }
+                            }
+
+
+                          }
+
+                          popup_bar_bus.style.display = "block";
+                          popup_bar_bus.scrollIntoView();
+                    });
+
+              }
+
+              function display_data_train(title, lines, amenities, frequency, crowding, LineCode, exits) {
+                showMap("subway");
+
+                body.style.overflow = 'auto';
+
+                const bus_bar = document.getElementById("popup_bar_bus");
+                bus_bar.style.display = 'none';
+
+                const NEL = document.getElementById("NEL");
+                const NS = document.getElementById("NS");
+                const EW = document.getElementById("EW")
+                const CCL = document.getElementById("CCL")
+                const ToiletPNG = document.getElementById("ToiletPNG_train")
+                const ATMPNG = document.getElementById("ATMPNG_train")
+                const ConveniencesPNG = document.getElementById("ConveniencesPNG_train")
+                const DisabledPNG = document.getElementById("DisabledPNG_train")
+                const header_amenities = document.getElementById("header_amenities_train");
+
+                let popup_bar_train = document.getElementById("popup_bar_train");
+                popup_bar_train.style.display = "none";
+
+                const description_title = document.getElementById("title_train");
+                const trains_data = document.getElementById("trains_train");
+                const first_last_train = document.getElementById("first_last_train");
+                const crowding_level = document.getElementById("crowding_level");
+                const exit_details = document.getElementById("exit_details")
+                const alerts_section = document.getElementById("alerts_section");
+
+                crowding_level.innerHTML = "";
+                exit_details.textContent = "";
+                header_amenities.style.display = "none";
+                first_last_train.textContent = ""
+                description_title.textContent = "";
+                trains_data.textContent = "";
+
+                  prehtml = `
+                            <div style="display: flex; justify-content: flex-start">
+                                <div>
+                                    <svg  id="close_svg" xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi d-block mx-auto" viewBox="0 0 16 16"
+                                    onclick="document.getElementById('popup').style.display='none';
+                                    document.getElementById('background').style.display='none'">
+                                          <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3>Location Details</h3>
+                                </div>
+                            </div>
+                  `
+
+                for(alert of alerts) {
+                    if(alert.includes("NEL")) {
+                        alerts_section.textContent = alerts_section.textContent + `<p>${alert}</p>`;
+                    }
+                }
+
+                images = popup_bar_train.getElementsByTagName("img");
+                for(const img of images) {
+                    img.style.display = "none";
+                    img.style.width = "0";
+                    img.style.marginRight = "0";
+                }
+
+                amenities_names = [];
+                amenities_description = [];
+                for(amenity of amenities) {
+                    amenities_names.push(amenity[0]);
+                    amenities_description.push(amenity[1]);
+                }
+
+                if(amenities_names.length > 0) {header_amenities.style.display="block";}
+                if(amenities_names.includes("ATM")) {
+                    header_amenities.style.display="block";
+                    ATMPNG.style.display = "block";
+                    ATMPNG.style.width = "30px";
+                    ATMPNG.style.height = "30px";
+                    ATMPNG.addEventListener("click", function() {
+                        outHTML = '';
+                        popup_box.style.display='block';
+                        background.style.display='block';
+                        popup_box.innerHTML = prehtml
+
+                        for(let i=0; i<amenities_names.length; i++) {
+                            if(amenities_names[i] == "ATM") {
+                                outHTML += `
+                                       <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                           <div>
+                                               <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/ATM.png' %}">
+                                           </div>
+                                           <div>
+                                               <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                           </div>
+                                       </div>`;
+                            }
+                        }
+                        popup_box.innerHTML += outHTML;
+                    })
+
+
+                }
+                if(amenities_names.includes("Toilet")) {
+                    header_amenities.style.display="block";
+                    ToiletPNG.style.display = "block";
+                    ToiletPNG.style.width = "30px";
+                    ToiletPNG.style.height = "30px";
+                    ToiletPNG.addEventListener("click", function() {
+                        outHTML = '';
+                        popup_box.style.display='block';
+                        background.style.display='block';
+                        popup_box.innerHTML = prehtml
+
+                        for(let i=0; i<amenities_names.length; i++) {
+                            if(amenities_names[i] == "Toilet") {
+                                outHTML += `
+                                       <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                           <div>
+                                               <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Toilet.png' %}">
+                                           </div>
+                                           <div>
+                                               <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                           </div>
+                                       </div>`;
+                            }
+                        }
+                        popup_box.innerHTML += outHTML;
+                    })
+                }
+
+
+                if(amenities_names.includes("Wheelchair")) {
+                    header_amenities.style.display="block";
+                    DisabledPNG.style.display = "block";
+                    DisabledPNG.style.width = "30px";
+                    DisabledPNG.style.height = "30px";
+                    DisabledPNG.addEventListener("click", function() {
+                        outHTML = '';
+                        popup_box.style.display='block';
+                        background.style.display='block';
+                        popup_box.innerHTML = prehtml
+
+                        for(let i=0; i<amenities_names.length; i++) {
+                            if(amenities_names[i] == "Wheelchair") {
+                                outHTML += `
+                                       <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                           <div>
+                                               <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Disabled.png' %}">
+                                           </div>
+                                           <div>
+                                               <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                           </div>
+                                       </div>`;
+                            }
+                        }
+                        popup_box.innerHTML += outHTML;
+                    })
+                }
+
+                if(amenities_names.includes("Convenience Store")) {
+                    header_amenities.style.display="block";
+                    ConveniencesPNG.style.display = "block";
+                    ConveniencesPNG.style.width = "30px";
+                    ConveniencesPNG.style.height = "30px";
+
+                    ConveniencesPNG.addEventListener("click", function() {
+                            outHTML = '';
+                            popup_box.style.display='block';
+                            background.style.display='block';
+                            popup_box.innerHTML = prehtml
+
+                            for(let i=0; i<amenities_names.length; i++) {
+                                if(amenities_names[i] == "Convenience Store") {
+                                    outHTML += `
+                                           <div class="display_info" style="display: flex; justify-content: flex-start;">
+                                               <div>
+                                                   <img style="height: 30px; margin-top: 5px" src="{% static 'images/Amenities/Conveniences.png' %}">
+                                               </div>
+                                               <div>
+                                                   <p style="margin-left: 10px;"> ${amenities_description[i]}</p>
+                                               </div>
+                                           </div>`;
+                                }
+                            }
+                            popup_box.innerHTML += outHTML;
+                        })
+
+                }
+
+
+                for(const exit of exits) {
+                    img_url = `${exit[0]}.png`
+                    img_url = "{% static 'images/MRTExits/' %}" + img_url;
+
+                    out = exit[1].replaceAll("By", "").replaceAll("Near", "");
+                    exit_element = document.createElement("p");
+                    exit_element.style.marginBottom = "2px";
+                    exit_element.innerHTML = `<div style="display: flex; justify-content: flex-start"> <div><img style="width: 22px; height: 22px; margin-right: 10px; margin-top: 5px;" src="${img_url}"></div>   <div style="margin-top: 7px;">${out}</div></div>`
+                    exit_details.appendChild(exit_element);
+                }
+
+                p_element = document.createElement('p');
+                p_element.style.color = 'orange';
+
+                if(crowding == 'm') {
+                    p_element.style.color = 'orange';
+                    p_element.textContent = "Moderate Crowding";
+                  }
+                  else if(crowding == 'l') {
+                    p_element.style.color = 'green';
+                    p_element.textContent = "Less Crowded";
+                  }
+                  else if(crowding == 'h')
+                  {
+                    p_element.style.color = 'red';
+                    p_element.textContent = "crowded";
+                  }
+                  else if(crowding == 'X') {
+                    p_element.style.color = 'black';
+                    p_element.textContent = "Crowding Data Currently Unavailable";
+                  }
+
+                  crowding_level.appendChild(p_element);
+                  first_last_train.innerHTML += `<p style="margin: 0; font-weight: 400;">First Train: ${firsttrain} <span style="margin-left: 10px">Last Train: ${lasttrain}</span></p>`;
+
+                for(const item of lines) {
+                    if(item == "North-East") {
+                        NEL.style.display = "block";
+                        NEL.style.width = "40px";
+                        NEL.style.marginRight = "5px";
+                        NEL.style.height = "25px";
+                    }
+                    if(item == "North-South") {
+                        NS.style.display = "block";
+                        NS.style.width = "40px";
+                        NS.style.height = "25px";
+
+                        NS.style.marginRight = "5px";
+                    }
+                    if(item == "East-West") {
+                        EW.style.display = "block";
+                        EW.style.width = "40px";
+                        EW.style.height = "25px";
+
+                        EW.style.marginRight = "5px";
+                    }
+                    if(item == "Circle") {
+                        CCL.style.display = "block";
+                        CCL.style.width = "40px";
+                        CCL.style.height = "25px";
+
+                        CCL.style.marginRight = "5px";
+                    }
+                }
+                trains_data.innerHTML = `<strong>${frequency}</strong>`;
+
+                url = title+" MRT Station"
+                url = url.replaceAll(" ", "+");
+                description_title.innerHTML = "<div class='new' style='display: flex; justify-content: space-between; margin-right: 2vw;'> <div class='side'><i class=\"fa-solid fa-train train-icon\"></i>  " + LineCode + " - " + title + "</div><div class='right_side'><a href='https://www.google.com/maps/search/" + url + "' target='_blank' style='font-size: 15px; font-weight: 200;'><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"12px\" height=\"12px\" style='margin: 0;' fill=\"currentColor\" class=\"bi bi-box-arrow-up-left\" viewBox=\"0 0 16 16\">\n" +
+                    "  <path fill-rule=\"evenodd\" d=\"M7.364 3.5a.5.5 0 0 1 .5-.5H14.5A1.5 1.5 0 0 1 16 4.5v10a1.5 1.5 0 0 1-1.5 1.5h-10A1.5 1.5 0 0 1 3 14.5V7.864a.5.5 0 1 1 1 0V14.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-.5-.5H7.864a.5.5 0 0 1-.5-.5\"/>\n" +
+                    "  <path fill-rule=\"evenodd\" d=\"M0 .5A.5.5 0 0 1 .5 0h5a.5.5 0 0 1 0 1H1.707l8.147 8.146a.5.5 0 0 1-.708.708L1 1.707V5.5a.5.5 0 0 1-1 0z\"/>" +
+                    "</svg> Open in Google Maps</a></div>";
+                popup_bar_train.style.display = "block";
+                popup_bar_train.scrollIntoView();
+              }
+
+              let current = null;
+              let markers = [];
+
+              for(const wheelchair of wheelchairs) {
+                 let el = document.createElement("img");
+                  el.style.width = "12px";
+
+                  el.src = "{% static 'images/Amenities/Disabled.png' %}";
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(wheelchair[0]), lng: Number(wheelchair[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 85,
+
+                  });
+
+                  let name = wheelchair[2];
+                  let location = wheelchair[3];
+                  let category = wheelchair[4];
+
+                  let infoWindow = new google.maps.InfoWindow({
+                      content: `<h3>${name} • ${category}</h3> ${location}`,
+                  });
+
+                  markers.push(r);
+
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+                    current = infoWindow;
+
+                    infoWindow.open({
+                          anchor: r,  // attach to marker
+                          map: map,
+                          shouldFocus: false
+                    });
+                  })
+              }
+              for(const atm of atms) {
+                  let el = document.createElement("img");
+                  el.style.width = "22px";
+
+                  el.src = "{% static 'images/Amenities/ATM.png' %}";
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(atm[0]), lng: Number(atm[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 50,
+                  });
+
+                  let name = atm[2];
+                  let location = atm[3];
+                  let category = atm[4];
+
+                  let infoWindow = new google.maps.InfoWindow({
+                      content: `<h3>${name} • ${category}</h3> ${location}`,
+                  });
+
+                  markers.push(r);
+
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+                    current = infoWindow;
+
+                    infoWindow.open({
+                          anchor: r,  // attach to marker
+                          map: map,
+                          shouldFocus: false
+                    });
+                  })
+              }
+              for(const convenience of conveniences) {
+
+                  let el = document.createElement("img");
+                  el.style.width = "22px";
+
+                  el.src = "{% static 'images/Amenities/Conveniences.png' %}";
+
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(convenience[0]), lng: Number(convenience[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 75,
+                  });
+
+                  let category = convenience[4];
+                  let name = convenience[2];
+                  let location = convenience[3];
+
+                  let infoWindow = new google.maps.InfoWindow({
+                      content: `<h3 style="margin-top: 0">${name} • ${category}</h3> ${location}`,
+                  });
+
+                  markers.push(r);
+
+
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+
+                    current = infoWindow;
+
+                    infoWindow.open({
+                          anchor: r,  // attach to marker
+                          map: map,
+                          shouldFocus: false
+                    });
+                  })
+
+              }
+              for(const toilet of toilets) {
+
+                  let el = document.createElement("img");
+                  el.style.width = "17px";
+
+                  el.src = "{% static 'images/Amenities/Toilet.png' %}";
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(toilet[0]), lng: Number(toilet[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 80,
+
+                  });
+
+                  let description = toilet[3];
+
+                  let infoWindow = new google.maps.InfoWindow({
+                      content: `<h3>Toilet</h3><p>${description}</p>`,
+                  });
+
+                  markers.push(r);
+
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+
+                    current = infoWindow;
+
+                    infoWindow.open({
+                          anchor: r,  // attach to marker
+                          map: map,
+                          shouldFocus: false
+                    });
+                  })
+
+              }
+              for(const trainstationexit of trainstationexits) {
+                  let el = document.createElement("img");
+                  let source = "{% static 'images/MRTExits/' %}"
+                  let x = trainstationexit[0]
+                  el.style.width = "17px";
+
+                  el.src = `${source}${x}.png`;
+
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(trainstationexit[2]), lng: Number(trainstationexit[3]) },
+                    map: map,
+                    content: el,
+                    zIndex: 90,
+
+                  });
+
+                  let digit = trainstationexit[0];
+                  let description = trainstationexit[1];
+
+                  let infoWindow = new google.maps.InfoWindow({
+                      content: `<h3>Exit ${digit}</h3><p>${description}</p>`,
+                  });
+
+                  markers.push(r);
+
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+
+                    current = infoWindow;
+
+                    infoWindow.open({
+                          anchor: r,  // attach to marker
+                          map: map,
+                          shouldFocus: false
+                    });
+                  })
+
+              }
+              for(const trainstation of trainstations) {
+                  let el = document.createElement("img");
+                  el.style.width = "35px";
+
+                  el.src = "{% static 'images/Amenities/trainStation.png' %}";
+
+                  curr = trainstations.indexOf(trainstation);
+                  prev = trainstations.indexOf(trainstation) - 1;
+
+
+
+                  if(curr != 0) {
+                        time = Number(trainstation[5].replace("Every ", "").replace(" min", ""))
+                        setPosition(trainstation[0], trainstation[1], trainstations[prev][0], trainstations[prev][1], time*60*50);
+                        setPosition(trainstations[prev][0], trainstations[prev][1], trainstation[0], trainstation[1], time*60*50);
+                  }
+
+                  else {
+                      time = Number(trainstation[5].replace("Every ", "").replace(" min", ""))
+                      setPosition(trainstation[0], trainstation[1], trainstations[1][0], trainstations[1][1], time*60*50);
+                      setPosition(trainstations[1][0], trainstations[1][1], trainstation[0], trainstation[1], time*60*50);
+                  }
+
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(trainstation[0]), lng: Number(trainstation[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 100,
+
+                  });
+                  markers.push(r);
+
+                  console.log(trainstation[4]);
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+                    map.position = {lat: r.position.lat, lng: r.position.lng}
+                    map.zoom = 17;
+                    display_data_train(trainstation[2], trainstation[3], trainstation[4], trainstation[5], trainstation[6], trainstation[7], trainstation[8]);
+                  })
+
+              }
+              for(const busstop of busstops) {
+                  let el = document.createElement("img");
+                  el.style.width = "35px";
+
+                  el.src = "{% static 'images/Amenities/busStop.png' %}";
+
+                  let r = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(busstop[0]), lng: Number(busstop[1]) },
+                    map: map,
+                    content: el,
+                    zIndex: 100,
+
+                  });
+                  markers.push(r);
+                  r.addEventListener("click", function () {
+                    if(current != null) {current.close();}
+                    map.position = {lat: r.position.lat, lng: r.position.lng}
+                    map.zoom = 17;
+                    display_data_bus(busstop[2], busstop[3], busstop[4], r.position)
+                  })
+              }
+
+
+                //station: 100
+                //exit: 90
+                //toilet: 80
+                //convenience: 75
+                //atm:50
+                //wheelchair: 85
+
+                map.addListener("zoom_changed", () => {
+                    zoom = map.getZoom();
+                    for(const marker of markers) {
+                        if(marker.zIndex == 100) {
+                            marker.map = map;
+                        }
+
+                        else if(zoom >= 17 && marker.zIndex > 50) {
+                            marker.map = map;
+
+                        }
+                        else if(zoom > 15.6 && marker.zIndex > 75) {
+                            marker.map = map;
+
+                        }
+                        else if(zoom > 14 && marker.zIndex > 90) {
+                            marker.map = map;
+                        }
+                        else {
+                            marker.map = null;
+                        }
+
+                    }
+
+                });
+            }
+
+            function toRad(deg) {
+                return deg * Math.PI / 180;
+            }
+            function sleep(ms) {
+                return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+            function createCurve(start, end, curvature = 0.3, steps = 100, direction) {
+                const path = [];
+
+                const midLat = (start.lat + end.lat) / 2;
+                const midLng = (start.lng + end.lng) / 2;
+
+                // perpendicular offset
+                const dx = end.lng - start.lng;
+                const dy = end.lat - start.lat;
+
+                let controlLng, controlLat;
+                if(direction == false) {
+                    controlLat = midLat + dx * curvature;
+                    controlLng = midLng - dy * curvature;
+                }
+                else {
+                    controlLat = midLat - dx * curvature;
+                    controlLng = midLng + dy * curvature;
+                }
+
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+
+                    const lat =
+                        (1 - t) * (1 - t) * start.lat +
+                        2 * (1 - t) * t * controlLat +
+                        t * t * end.lat;
+
+                    const lng =
+                        (1 - t) * (1 - t) * start.lng +
+                        2 * (1 - t) * t * controlLng +
+                        t * t * end.lng;
+
+                    path.push({ lat, lng });
+                }
+
+                return path;
+            }
+            // FALSE: PUNGGOL COAST -> PUNGGOL
+            // TRUE: PUNGGOL -> PUNGGOL COAST
+            function createAsymCurve(start, end, steps = 100, direction) {
+                const path = [];
+                let control = 0;
+
+
+                if(direction == true) {
+                     control = {
+                        lat: start.lat + (end.lat - start.lat) * 1.3,
+                        lng: start.lng - 0.0009
+                    };
+                }
+                else {
+                     control = {
+                        lat: start.lat + (end.lat - start.lat) * 0.001,
+                        lng: start.lng - 0.011
+                    };
+                }
+
+                for (let i = 0; i <= steps; i++) {
+                    const t = i / steps;
+                    let lat;
+
+                    if(direction == true) {
+                         lat =
+                            (1 - t) * (1 - t) * start.lat +
+                            2 * (1 - t) * t * control.lat +
+                            t * t * end.lat;
+                    }
+                    else {
+                         lat =
+                            (1 - t) * (1 - t) * start.lat +
+                            2 * (1 - t) * t * control.lat +
+                            t * t * end.lat;
+                    }
+
+                    const lng =
+                        (1 - t) * (1 - t) * start.lng +
+                        2 * (1 - t) * t * control.lng +
+                        t * t * end.lng;
+
+
+                    path.push({ lat, lng });
+                }
+
+
+                return path;
+            }
+            function calc_bearing(latCurr, lngCurr, lat2, lng2) {
+                let φ1 = toRad(latCurr);
+                let φ2 = toRad(lat2);
+                let Δλ = toRad(lng2 - lngCurr);
+                let y = Math.sin(Δλ) * Math.cos(φ2);
+                let x = Math.cos(φ1) * Math.sin(φ2) -
+                    Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+
+                // atan2 gives result in radians between -π and +π
+                let θ = Math.atan2(y, x);
+
+                // Convert radians → degrees
+                let bearing = θ * 180 / Math.PI;
+
+                // Normalize to 0–360 degrees
+                bearing = (bearing + 360) % 360;
+                bearing -= 90;
+
+                return bearing;
+            }
+
+            async function moveAlongCurve(marker, path, delay = 20) {
+                for (let i = 1; i < path.length; i++) {
+                    bearing = calc_bearing(path[i-1].lat, path[i-1].lng, path[i].lat, path[i].lng);
+
+                    marker.content.style.transform = `rotate(${bearing}deg)`;
+
+                    marker.position = new google.maps.LatLng(path[i].lat, path[i].lng);
+                    await new Promise(r => setTimeout(r, delay));
+                }
+            }
+            async function setPosition(prevLat, prevLng, targetLat, targetLng, time) {
+                passed = 0;
+
+                bearing = calc_bearing(prevLat, prevLng, targetLat, targetLng);
+
+                let el = document.createElement("img");
+                el.src = "{% static 'images/Trains/NEL.png' %}"
+                el.style.width = "50px";
+
+
+                //el.src = `${source}${x}.png`;
+                el.style.transform = `rotate(${bearing}deg)`;
+                let marker = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: Number(prevLat), lng: Number(prevLng) },
+                    map: map,
+                    content: el,
+                    zIndex: 95,
+                });
+
+                let latCurr = 0.0;
+                let lngCurr = 0.0;
+                for(let j=0; j<10; j++) {
+                    for (let i = 1; i <= time; i++) {
+                        latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                        lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                        //1.344262, 103.870622
+
+                        if(prevLat == 1.3393800000 && prevLng == 103.8707500000 && targetLat == 1.3496750000 && targetLng == 103.8736490000) {
+                            for (let i = 0; i <= time*0.5609756; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.3393800000) + ((Number(1.344262) - Number(1.3393800000)) / Number(time*0.5609756)) * Number(i);
+                                lngCurr = Number(103.8707500000) + ((Number(103.870622) - Number(103.8707500000)) / Number(time*0.5609756)) * Number(i);
+
+                                lat2 = Number(1.3393800000) + ((Number(1.344262) - Number(1.3393800000)) / Number(time*0.5609756)) * (Number(i)+1)
+                                lng2 = Number(103.8707500000) + ((Number(103.870622) - Number(103.8707500000)) / Number(time*0.5609756)) * (Number(i)+1);
+
+                                bearing = calc_bearing(latCurr, lngCurr, lat2, lng2);
+
+                                el.style.transform = `rotate(${bearing}deg)`;
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            for (let i = 0; i <= time*0.43902; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.344262) + ((Number(1.3496750000) - Number(1.344262)) / Number(time*0.43902)) * Number(i);
+                                lngCurr = Number(103.870622) + ((Number(103.8736490000) - Number(103.870622)) / Number(time*0.43902)) * Number(i);
+
+                                lat2 = Number(1.344262) + ((Number(1.3496750000) - Number(1.344262)) / Number(time*0.43902)) * (Number(i)+1)
+                                lng2 = Number(103.870622) + ((Number(103.8736490000) - Number(103.870622)) / Number(time*0.43902)) * (Number(i)+1);
+
+                                bearing = calc_bearing(latCurr, lngCurr, lat2, lng2);
+
+
+                                el.style.transform = `rotate(${bearing}deg)`;
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            await new Promise(r => setTimeout(r, 20000));
+
+                        }
+
+                        //,
+                        else if(prevLat == 1.3496750000 && prevLng == 103.8736490000 && targetLat == 1.3393800000 && targetLng == 103.8707500000) {
+                            for (let i = 0; i <= time*0.43902; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.3496750000) + ((Number(1.344262) - Number(1.3496750000)) / Number(time*0.43902)) * Number(i);
+                                lngCurr = Number(103.8736490000) + ((Number(103.870622) - Number(103.8736490000)) / Number(time*0.43902)) * Number(i);
+
+                                lat2 = Number(1.3496750000) + ((Number(1.344262) - Number(1.3496750000)) / Number(time*0.43902)) * (Number(i)+1)
+                                lng2 = Number(103.8736490000) + ((Number(103.870622) - Number(103.8736490000)) / Number(time*0.43902)) * (Number(i)+1);
+
+                                bearing = calc_bearing(latCurr, lngCurr, lat2, lng2);
+
+                                el.style.transform = `rotate(${bearing}deg)`;
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+
+                            for (let i = 0; i <= time*0.5609756; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.344262) + ((Number(1.3393800000) - Number(1.344262)) / Number(time*0.5609756)) * Number(i);
+                                lngCurr = Number(103.870622) + ((Number(103.8707500000) - Number(103.870622)) / Number(time*0.5609756)) * Number(i);
+
+                                lat2 = Number(1.344262) + ((Number(1.3393800000) - Number(1.344262)) / Number(time*0.5609756)) * (Number(i) + 1);
+                                lng2 = Number(103.870622) + ((Number(103.8707500000) - Number(103.870622)) / Number(time*0.5609756)) * (Number(i)+1);
+
+                                bearing = calc_bearing(latCurr, lngCurr, lat2, lng2);
+
+
+                                el.style.transform = `rotate(${bearing}deg)`;
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            await new Promise(r => setTimeout(r, 20000));
+
+                        }
+
+                        else if (prevLat == 1.3709500000 && prevLng == 103.8924900000 && targetLat == 1.3601800000 && targetLng == 103.8852400000) {
+                            const curve = createCurve(
+                                { lat: Number(prevLat), lng: Number(prevLng) },
+                                { lat: Number(targetLat), lng: Number(targetLng) },
+                                0.27,  // increase for stronger bend
+                                time,
+                                false // false for downward curve, true for upward curve
+                            );
+
+                            await moveAlongCurve(marker, curve);
+                            await new Promise(r => setTimeout(r, 20000));
+                        }
+
+                        else if(targetLat == 1.3709500000 && targetLng == 103.8924900000 && prevLat == 1.3601800000 && prevLng == 103.8852400000) {
+                            const curve = createCurve(
+                                { lat: Number(prevLat), lng: Number(prevLng) },
+                                { lat: Number(targetLat), lng: Number(targetLng) },
+                                0.27,  // increase for stronger bend
+                                time,
+                                true  // false for downward curve, true for upward curve
+                            );
+
+                            await moveAlongCurve(marker, curve);
+                            await new Promise(r => setTimeout(r, 20000));
+                        }
+                        // PUNGGOL -> PUNGGOL COAST
+                        else if(targetLat == 1.4149500000 && targetLng == 103.9101400000 && prevLat == 1.4053460000 && prevLng == 103.9024970000) {
+                            for (let i = 1; i <= time*0.25; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.4053460000) + ((Number(1.409214) - Number(1.4053460000)) / Number(time*0.25)) * Number(i);
+                                lngCurr = Number(103.9024970000) + ((Number(103.904087) - Number(103.9024970000)) / Number(time*0.25)) * Number(i);
+
+                                lat2 = Number(1.4053460000) + ((Number(1.409214) - Number(1.4053460000)) / Number(time*0.25)) * (Number(i)+1);
+                                lng2 = Number(103.9024970000) + ((Number(103.904087) - Number(103.9024970000)) / Number(time*0.25)) * (Number(i)+1);
+
+                                el.style.transform = `rotate(305deg)`;
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+
+                            const curve = createAsymCurve(
+                                { lat: Number(1.409220), lng: Number(103.904273) },
+                                { lat: Number(targetLat), lng: Number(targetLng) },
+                                time*0.75,
+                                true    // flip if wrong direction
+                            );
+
+                            await moveAlongCurve(marker, curve);
+                            await new Promise(r => setTimeout(r, 20000));
+
+                        }
+                        // PUNGGOL COAST -> PUNGGOL
+                        else if(targetLat == 1.4053460000 && targetLng == 103.9024970000 && prevLat == 1.4149500000 && prevLng == 103.9101400000) {
+                            el.style.transform = `rotate(-180deg)`;
+
+                            for (let i = 0; i <= time*0.190184; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.415332) + ((Number(1.415584) - Number(1.415332)) / Number(time*0.1901)) * Number(i);
+                                lngCurr = Number(103.910354) + ((Number(103.907534) - Number(103.910354)) / Number(time*0.1901)) * Number(i);
+
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-185deg)`;
+                            for (let i = 0; i <= time*0.1042944; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.415584) + ((Number(1.415436) - Number(1.415584)) / Number(time*0.1042944)) * Number(i);
+                                lngCurr = Number(103.907534) + ((Number(103.905980) - Number(103.907534)) / Number(time*0.1042944)) * Number(i);
+
+
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-190deg)`;
+                            for (let i = 0; i <= time*0.1042944; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.415436) + ((Number(1.414919) - Number(1.415436)) / Number(time*0.1042944)) * Number(i);
+                                lngCurr = Number(103.905980) + ((Number(103.904561) - Number(103.905980)) / Number(time*0.1042944)) * Number(i);
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-200deg)`;
+                            for (let i = 0; i <= time*0.0306748; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.414919) + ((Number(1.414713) - Number(1.414919)) / Number(time*0.0306748)) * Number(i);
+                                lngCurr = Number(103.904561) + ((Number(103.904166) - Number(103.904561)) / Number(time*0.0306748)) * Number(i);
+
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+
+                            el.style.transform = `rotate(-220deg)`;
+                            for (let i = 0; i <= time*0.06134969; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.414713) + ((Number(1.413989) - Number(1.414713)) / Number(time*0.06134969)) * Number(i);
+                                lngCurr = Number(103.904166) + ((Number(103.903655) - Number(103.904166)) / Number(time*0.06134969)) * Number(i);
+
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-270deg)`;
+
+                            for (let i = 0; i <= time*0.0306748; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.413989) + ((Number(1.413565) - Number(1.413989)) / Number(time*0.0306748)) * Number(i);
+                                lngCurr = Number(103.903655) + ((Number(103.903596) - Number(103.903655)) / Number(time*0.0306748)) * Number(i);
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-290deg)`;
+                            for (let i = 0; i <= time*0.2331288; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.413565) + ((Number(1.410165) - Number(1.413565)) / Number(time*0.2331288)) * Number(i);
+                                lngCurr = Number(103.903596) + ((Number(103.903950) - Number(103.903596)) / Number(time*0.2331288)) * Number(i);
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            el.style.transform = `rotate(-2800deg)`;
+                            for (let i = 0; i <= time*0.07362; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.410165) + ((Number(1.409071) - Number(1.410165)) / Number(time*0.07362)) * Number(i);
+                                lngCurr = Number(103.903950) + ((Number(103.904068) - Number(103.903950)) / Number(time*0.07362)) * Number(i);
+
+                                lat2 = Number(1.410165) + ((Number(1.409071) - Number(1.410165)) / Number(time*0.07362)) * (Number(i)+1);
+                                lng2 = Number(103.903950) + ((Number(103.904068) - Number(103.903950)) / Number(time*0.07362)) * (Number(i)+1);
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+
+                            el.style.transform = `rotate(-235deg)`;
+                            for (let i = 0; i <= time*0.220859+0.05521; i++) {
+                                //       latCurr = Number(prevLat) + ((Number(targetLat) - Number(prevLat)) / Number(time)) * Number(i);
+                                //       lngCurr = Number(prevLng) + ((Number(targetLng) - Number(prevLng)) / Number(time)) * Number(i);
+                                latCurr = Number(1.409071) + ((Number(1.4053460000) - Number(1.409071)) / Number(time*0.220859)) * Number(i);
+                                lngCurr = Number(103.904068) + ((Number(103.9024970000) - Number(103.904068)) / Number(time*0.220859)) * Number(i);
+
+                                lat2 = Number(1.409071) + ((Number(1.4053460000) - Number(1.409071)) / Number(time*0.220859)) * (Number(i)+1);
+                                lng2 = Number(103.904068) + ((Number(103.9024970000) - Number(103.904068)) / Number(time*0.220859)) * (Number(i)+1);
+
+                                marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                                await new Promise(r => setTimeout(r, 20));
+                            }
+                            await new Promise(r => setTimeout(r, 20000));
+
+                        }
+
+                        else {
+                            marker.position = new google.maps.LatLng(Number(latCurr), Number(lngCurr));
+                        }
+                        await new Promise(r => setTimeout(r, 20));
+                    }
+                    await new Promise(r => setTimeout(r, 20000));
+
+                }
+            }
+
+        </script>
+        {{ Amenities.ATM|json_script:"atms-data" }}
+        {{ Amenities.Convenience|json_script:"conveniences-data" }}
+        {{ Amenities.Wheelchair|json_script:"wheelchairs-data" }}
+        {{ Amenities.Toilet|json_script:"toilets-data" }}
+        {{ Amenities.TrainStationExit|json_script:"trainstationexits" }}
+        {{ Amenities.TrainStation|json_script:"trainstation" }}
+        {{ Amenities.Wheelchair|json_script:"wheelchairs" }}
+        {{ Amenities.Alerts|json_script:"alerts" }}
+        {{ Amenities.BusStop|json_script:"busstops" }}
+        {{ Amenities.TrainLine|json_script:"TrainLine" }}
+        {{ Amenities.LastTrain|json_script:"lasttrain" }}
+        {{ Amenities.FirstTrain|json_script:"firsttrain" }}
+
+        <script
+          src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDxNs7nXA5b5Ly0sYuWfI9oPzx5mk5oMMQ&callback=get_location&v=weekly&libraries=marker"
+          defer
+        ></script>
+        <script type="module" src="{% static 'subway_map/index.js' %}"></script>
+
+
+        {% elif Action == 'directions' %}
+        <!-- This code executed if the user is on the directions menu-->
+
+
+        {% endif %}
+
+        <div class="footer">
+
+        </div>
+    </div>
+
+{% endblock %}

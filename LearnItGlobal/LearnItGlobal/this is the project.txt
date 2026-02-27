@@ -1,0 +1,1 @@
+This is the project folder. The apps are the other folders without the asgi.py and urls.py and
