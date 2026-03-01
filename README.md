@@ -10,7 +10,7 @@ Welcome to BusMapperSG! A responsive Django web app that makes
 commuting easier by providing real-time bus and train locations, 
 arrival times, crowding info, and station amenities. 
 
-⚠️ **20-second demo:** [https://youtu.be/D_WVxfMUiTU  ](https://www.youtube.com/watch?v=D_WVxfMUiTU&list=PLnL6WpWjTSrJmPOEB30jLO2XghAlz9ZEn&index=2)
+⚠️ **20-second demo:** [Youtube  ]([https://www.youtube.com/watch?v=D_WVxfMUiTU&list=PLnL6WpWjTSrJmPOEB30jLO2XghAlz9ZEn&index=2](https://youtu.be/xBYDm0gNGUM))
 
 ---
 
