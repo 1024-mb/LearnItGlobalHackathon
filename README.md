@@ -34,7 +34,8 @@ BusMapperSG solves this by:
 - **♿️ Improving accessibility:** shows station amenities and disabled access. 
 - **☺️ Reducing anxiety:** provides real-time crowding info so users can avoid crowded trains or buses. 
 - **🧭 Simplifying navigation:** step-by-step directions for every station, removing guesswork. 
-- In short, it makes daily commuting safer, faster, and more inclusive, which is a tangible impact for millions of transit users in Singapore.
+
+In short, it makes daily commuting safer, faster, and more inclusive, which is a tangible impact for millions of transit users in Singapore.
 
 ---
 
