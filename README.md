@@ -15,12 +15,14 @@ arrival times, crowding info, and station amenities.
 ---
 
 ## Table of Contents
-- Why This Project Matters  
-- Technologies Used  
-- Project Layout  
-- Prequisites  
-- Setup Instructions  
-
+- [Why This Project Matters](#Why-this-Project-Matters)
+- [Key Features](#Key-Features)
+- [Example Screenshots](#Example-Screenshots)
+- [Technologies Used](#Technologies/Frameworks)
+- [Project Layout](#Project-Layout)
+- [Prequisites](#Prerequisites)
+- [Setup Instructions](#Setup)
+- [Routes](#Routes)
 
 ---
 
@@ -38,6 +40,20 @@ BusMapperSG solves this by:
 In short, it makes daily commuting safer, faster, and more inclusive, which is a tangible impact for millions of transit users in Singapore.
 
 ---
+## Key Features
+- Real-Time bus tracking through LTA-Sourced data
+- Smooth train animation through AI-Powered timetabling
+- Light and Dark mode for enhanced accessibility
+- Detailed & Clear directional information for amenities, such as *by Exit A*
+
+---
+## Example Screenshots
+<p float="left">
+  <img src="screenshot1.png" width="100" />
+  <img src="screenshot2.png" width="100" />
+  <img src="screenshot3.png" width="100" />
+  <img src="screenshot4.png" width="100" />
+</p>
 
 ## Technologies/Frameworks
 - Python + Django 5
