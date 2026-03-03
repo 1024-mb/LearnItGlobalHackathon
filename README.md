@@ -11,6 +11,7 @@ commuting easier by providing real-time bus and train locations,
 arrival times, crowding info, and station amenities. 
 
 ⚠️ **50-second demo:** https://youtu.be/xBYDm0gNGUM  
+
 🎥 **Live Link:** https://learnitglobalhackathon.onrender.com/ 
 
 ---
@@ -21,6 +22,7 @@ arrival times, crowding info, and station amenities.
 - [Example Screenshots](#Example-Screenshots)
 - [Technologies Used](#Technologies/Frameworks)
 - [Project Layout](#Project-Layout)
+- [Database Schema](#Database-Schema)
 - [Prequisites](#Prerequisites)
 - [Setup Instructions](#Setup)
 - [Routes](#Routes)
@@ -74,6 +76,10 @@ In short, it makes daily commuting safer, faster, and more inclusive, which is a
 - `LearnItGlobal/LearnItGlobal/templates/base.html` base template
 - `LearnItGlobal/LearnItGlobal/templates/main.html` main page template
 - `LearnItGlobal/static/` CSS, JS, maps, images, React Elements
+
+---
+## Database Schema
+<img width="700" height="530" alt="Normalised Database" src="https://github.com/user-attachments/assets/dfa76061-f3b9-4196-8a36-c2738ea442c1" />
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
